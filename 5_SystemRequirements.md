@@ -70,13 +70,12 @@ NFSUP2 Система должна обеспечивать мониторинг
 
 [DrawIO](UseCase.drawio)
 ![UseCaseDiagramm](images/UseCase.png)
-
-[Holst](https://app.holst.so/share/b/32e618be-aed5-4f67-b37a-62b4513ff9ea)
 ![Usecase](<images/Декомпозиция Uscase по этапам.png>)
-
+[Holst](https://app.holst.so/share/b/32e618be-aed5-4f67-b37a-62b4513ff9ea)
 ## 5.2.2 Описание UseCase, реализуемых в рамках MVP
 
 Название |UC-1: Выбрать способ употребления пищи 
 | ------------- | ------------- |  
 Краткое описание | Выбор способа употребления пищи в приложении
-Субъекты | 1. Пользователь 2. Система
+Субъекты | 1. Пользователь 
+        | 2. Система

@@ -1,4 +1,4 @@
-@startuml
+@startuml diagramm name
 
 (First usecase)
 (Another usecase) as (UC2)

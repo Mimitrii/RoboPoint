@@ -67,5 +67,5 @@ NFSUP2 Система должна обеспечивать мониторинг
 ### 5.2.1 UseCase диаграмма
 Основные функции системы представлены в виде UseCase диаграммы.
 
-[UseCaseDiagramm](UseCase.drawio)
+[DrawIO](UseCase.drawio)
 ![UseCaseDiagramm](images/UseCase.png)

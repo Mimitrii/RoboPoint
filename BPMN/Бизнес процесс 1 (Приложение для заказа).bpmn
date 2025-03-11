@@ -185,6 +185,7 @@
         <bpmn:incoming>Flow_0uov1tu</bpmn:incoming>
         <bpmn:incoming>Flow_037e70p</bpmn:incoming>
         <bpmn:incoming>Flow_0plspkb</bpmn:incoming>
+        <bpmn:incoming>Flow_0cfnpx3</bpmn:incoming>
         <bpmn:outgoing>Flow_02sxczp</bpmn:outgoing>
       </bpmn:exclusiveGateway>
       <bpmn:sequenceFlow id="Flow_02sxczp" sourceRef="Gateway_0zygxe0" targetRef="Activity_18v4s7b" />
@@ -214,13 +215,18 @@
       <bpmn:sequenceFlow id="Flow_1rhf7ms" sourceRef="Gateway_1337x5d" targetRef="Activity_039tds7" />
       <bpmn:sequenceFlow id="Flow_0plspkb" sourceRef="Event_1wa2co1" targetRef="Gateway_0zygxe0" />
       <bpmn:sequenceFlow id="Flow_1dgygcl" name="нет" sourceRef="Gateway_00bv79v" targetRef="Gateway_1337x5d" />
+      <bpmn:sequenceFlow id="Flow_0cfnpx3" name="повторный пароль введен не верно" sourceRef="Event_1t06vaj" targetRef="Gateway_0zygxe0" />
+      <bpmn:boundaryEvent id="Event_1t06vaj" attachedToRef="Activity_18v4s7b">
+        <bpmn:outgoing>Flow_0cfnpx3</bpmn:outgoing>
+        <bpmn:escalationEventDefinition id="EscalationEventDefinition_01fatdt" />
+      </bpmn:boundaryEvent>
       <bpmn:boundaryEvent id="Event_003z2cl" name="пользователь с таким номером телефона уже зарегистрирован" attachedToRef="Activity_18v4s7b">
         <bpmn:outgoing>Flow_0uov1tu</bpmn:outgoing>
-        <bpmn:errorEventDefinition id="ErrorEventDefinition_00my843" />
+        <bpmn:escalationEventDefinition id="EscalationEventDefinition_1qpby96" />
       </bpmn:boundaryEvent>
       <bpmn:boundaryEvent id="Event_0enjrrm" name="пользователь с таким E-mail уже зарегистрирован" attachedToRef="Activity_18v4s7b">
         <bpmn:outgoing>Flow_037e70p</bpmn:outgoing>
-        <bpmn:errorEventDefinition id="ErrorEventDefinition_1wh2w7u" />
+        <bpmn:escalationEventDefinition id="EscalationEventDefinition_1lboeo1" />
       </bpmn:boundaryEvent>
     </bpmn:subProcess>
     <bpmn:boundaryEvent id="Event_1n6qj0x" name="оформление заказа не возможно" attachedToRef="Activity_0e1tu8m">
@@ -1480,16 +1486,19 @@
       <bpmndi:BPMNShape id="Gateway_1337x5d_di" bpmnElement="Gateway_1337x5d" isMarkerVisible="true">
         <dc:Bounds x="455" y="332" width="50" height="50" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0bdhz81_di" bpmnElement="Event_0enjrrm">
-        <dc:Bounds x="382" y="379" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="406" y="410" width="87" height="40" />
-        </bpmndi:BPMNLabel>
+      <bpmndi:BPMNShape id="Event_1cr64gl_di" bpmnElement="Event_1t06vaj">
+        <dc:Bounds x="352" y="299" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0i7t9hs_di" bpmnElement="Event_003z2cl">
+      <bpmndi:BPMNShape id="Event_1s4mp99_di" bpmnElement="Event_003z2cl">
         <dc:Bounds x="332" y="379" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="246" y="403" width="87" height="53" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1lxmye9_di" bpmnElement="Event_0enjrrm">
+        <dc:Bounds x="382" y="379" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="406" y="410" width="87" height="40" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_02sxczp_di" bpmnElement="Flow_02sxczp">
@@ -1538,6 +1547,15 @@
         <di:waypoint x="480" y="332" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="591" y="262" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0cfnpx3_di" bpmnElement="Flow_0cfnpx3">
+        <di:waypoint x="370" y="299" />
+        <di:waypoint x="370" y="279" />
+        <di:waypoint x="110" y="279" />
+        <di:waypoint x="189" y="486" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="212" y="223" width="76" height="40" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>

@@ -68,8 +68,8 @@ NFSUP2 Система должна обеспечивать мониторинг
 ### 5.2.1 UseCase диаграмма
 Основные функции системы представлены в виде UseCase диаграммы.
 
-[DrawIO](UseCase.drawio)
-[ViewerDiagrams](https://viewer.diagrams.net/?tags=%7B%7D&lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1&dark=auto#G1gGc2D9302firTckheYWKjclgMj5nHlrN)
+[DrawIO](UseCase.drawio)<br> 
+[ViewerDiagrams](https://viewer.diagrams.net/?tags=%7B%7D&lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1&dark=auto#G1gGc2D9302firTckheYWKjclgMj5nHlrN) <br> 
 ![UseCaseDiagramm](images/UseCase.png)
 
 ### 5.2.2 Описание UseCase, реализуемых в рамках MVP

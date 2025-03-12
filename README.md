@@ -1,2 +1,2 @@
-# hw_proj
+# RoboPoint
 OTUS project

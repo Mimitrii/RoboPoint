@@ -1,6 +1,6 @@
 <mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.7.8 Chrome/128.0.6613.36 Electron/32.0.1 Safari/537.36" version="24.7.8">
   <diagram name="Use Case Диаграмма" id="fJJq1XX_mRZzDXfVeCcK">
-    <mxGraphModel dx="1004" dy="1076" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2336" pageHeight="1654" math="0" shadow="0">
+    <mxGraphModel dx="3212" dy="3444" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2336" pageHeight="1654" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -150,7 +150,7 @@
         </mxCell>
         <mxCell id="UeGWLzC9heVgN8gd-0fB-3" value="Exclude" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="UeGWLzC9heVgN8gd-0fB-2" vertex="1" connectable="0">
           <mxGeometry x="0.4709" y="-1" relative="1" as="geometry">
-            <mxPoint x="-37" y="131" as="offset" />
+            <mxPoint x="-37" y="200" as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="UeGWLzC9heVgN8gd-0fB-4" value="UC 11. Получить информацию о готовности заказа на информационном табло" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
@@ -170,21 +170,6 @@
         </mxCell>
         <mxCell id="UeGWLzC9heVgN8gd-0fB-10" value="UC 6. Выбрать способ употребления пищи" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="784" y="280" width="200" height="80" as="geometry" />
-        </mxCell>
-        <mxCell id="-T9xcUHiztWpg0cBJrow-1" value="UC 12 Повторить ранее оформленный заказ" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="320" y="620" width="200" height="80" as="geometry" />
-        </mxCell>
-        <mxCell id="-T9xcUHiztWpg0cBJrow-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;" parent="1" source="-T9xcUHiztWpg0cBJrow-1" edge="1">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points" />
-            <mxPoint x="775" y="772" as="sourcePoint" />
-            <mxPoint x="586" y="400" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="-T9xcUHiztWpg0cBJrow-3" value="Exclude" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="-T9xcUHiztWpg0cBJrow-2" vertex="1" connectable="0">
-          <mxGeometry x="0.4709" y="-1" relative="1" as="geometry">
-            <mxPoint x="-37" y="223" as="offset" />
-          </mxGeometry>
         </mxCell>
         <mxCell id="S9_bSr18i5k56wxXJ2rg-1" value="UC 9.&amp;nbsp;Начислить баллы по программе лояльности" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="310" y="480" width="200" height="80" as="geometry" />

@@ -20,50 +20,50 @@
 
 ### WF 5
 
-![alt text](<images/UI/Android Medium - 7.png>)
+![alt text](<images/UI/Android Medium - 5.png>)
 
 ### WF 6
 
-![alt text](<images/UI/Android Medium - 9.png>)
+![alt text](<images/UI/Android Medium - 6.png>)
 
 ### WF 7
 
-![alt text](<images/UI/Android Medium - 11.png>)
+![alt text](<images/UI/Android Medium - 7.png>)
 
 ### WF 8
 
-![alt text](<images/UI/Android Medium - 12.png>)
+![alt text](<images/UI/Android Medium - 8.png>)
 
 ### WF 9
 
-![alt text](<images/UI/Android Medium - 13.png>)
+![alt text](<images/UI/Android Medium - 9.png>)
 
 ### WF 10
 
-![alt text](<images/UI/Android Medium - 14.png>)
+![alt text](<images/UI/Android Medium - 10.png>)
 
 ### WF 11
 
-![alt text](<images/UI/Android Medium - 17.png>)
+![alt text](<images/UI/Android Medium - 11.png>)
 
 ### WF 12
 
-![alt text](<images/UI/Android Medium - 18.png>)
+![alt text](<images/UI/Android Medium - 12.png>)
 
 ### WF 13
 
-![alt text](<images/UI/Android Medium - 20.png>)
+![alt text](<images/UI/Android Medium - 13.png>)
 
 ### WF 14
 
-![alt text](<images/UI/Android Medium - 24.png>)
+![alt text](<images/UI/Android Medium - 14.png>)
 
 ### WF 15
 
-![alt text](<images/UI/Android Medium - 25.png>)
+![alt text](<images/UI/Android Medium - 15.png>)
 
 ### WF 16
 
-![alt text](<images/UI/Android Medium - 26.png>)
+![alt text](<images/UI/Android Medium - 16.png>)
 
 ## 8.2 Прототип приложения

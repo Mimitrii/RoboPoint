@@ -1,5 +1,5 @@
 @startuml
-title Сформировать корзину
+title UC-4: Сформировать корзину
 actor "Пользователь" as U 
 participant  "Приложение" as A 
 boundary "Сервис заказа" as S
@@ -7,7 +7,7 @@ dataBase "База данных" as DB
 autonumber "<b>[0]"  
 
 ref over U,A,S,DB
-Авторизация пользователя в системе
+UC-2: Авторизация пользователя в системе
 end ref
 
 alt количество блюд в корзине < 99
@@ -43,4 +43,5 @@ A--
 S--
 end
 end
+
 @enduml

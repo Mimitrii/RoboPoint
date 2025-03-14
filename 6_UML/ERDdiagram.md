@@ -3,6 +3,7 @@ Table User {
   name varchar
   latname varchar
   surname varchar
+  birthdayDate timestamp
   sex varchar
   userPhone integer
   email varchar
@@ -21,29 +22,30 @@ Table Dishes {
   fats decimal
   carbohydrates decimal
   calorie decimal
+  coefficientId varchar
+  price decimal
 }
 
-Table referencedDishes {
+Table ReferencedDishes {
   referencedDishesId varchar [primary key]
   dishId varchar 
 }
 
-Table Price {
-  dishId varchar [primary key]
-  coefficient decimal
-  price decimal
-  activeStatus boolean
+Table Coefficient {
+  coefficientId varchar [primary key]
+  name varchar
+  coefficient varchar
 } 
 
 Table Menu {
   menuId varchar2 [primary key]
   name varchar2
-  category varchar2
+  menuCategoryid varchar2
   expiryDateTime timestamp
   activeStatus boolean 
 }
 
-Table  recipe {
+Table  Recipe {
   recipeId varchar [primary key]
   name varchar2
   ingredientId varchar2
@@ -57,7 +59,7 @@ Table  recipe {
   calorie decimal
 }
 
-Table  ingredient {
+Table  Ingredient {
   ingredientId varchar [primary key]
   name varchar
   proteins decimal
@@ -71,7 +73,7 @@ Table  ingredient {
   expiryDateTime timestamp
 }
 
-Table  reservedIngredients {
+Table  ReservedIngredients {
   reserveId varchar [primary key]  
   ingredientId varchar
   orderId varchar
@@ -83,29 +85,31 @@ Table Order {
   detailno varchar
   userId varchar
   orderDateTime timestamp
-  status enum
-  typeOfDelivery enum
+  orderStatusId varchar
+  typeofDeliveryId varchar
   timeofDelivery timestamp
-	paymentId varchar
+  ammount varchar
   discount decimal
-	total decimal
+	paymentId varchar
 }
 
 Table Basket {
   detailno varchar [primary key]
   dishId varchar
   qty integer
-  cost decimal
+  ammount decimal
+
 }
 
 Table Bonus {
   bonusId varchar [primary key]
   userId varchar
+  paymentId varchar 
   bonusDateTime timestamp
   accrual  decimal
   deduction   decimal
   bonusExpiryDate timestamp
-  paymentId varchar
+  bonusPriceCoefficient decimal
 }
 
 Table ingredientOrder {
@@ -119,26 +123,66 @@ Table ingredientOrder {
 
 Table Payment {
   paymentId varchar [primary key]
-  typeofPayment enum
+  typeofPaymentid varchar
   dateTime timestamp
   bankPaymentId varchar
-  bonusPriceCoefficient enum
   total  decimal
+}
+
+Table Discount {
+  discountid varchar [primary key]
+  name varchar
+  description varchar
+  discount decimal
+  dishId varchar 
+  activeStatus boolean 
+  startDateTime timestamp
+  endDateTime timestamp
+  startTime timestamp
+  endTime timestamp
+}
+
+Table OrderStatus {
+  orderStatusId varchar [primary key]
+  orderId varchar
+  name varchar
+}
+
+
+Table TypeofDelivery {
+  typeofDeliveryId varchar [primary key]
+  orderId varchar
+  name varchar
+}
+
+Table TypeofPayment {
+  typeofPaymentid varchar [primary key]
+  paymentId varchar
+  name varchar
+}
+
+Table MenuCategory {
+  menuCategoryid varchar [primary key]
+  menuId varchar
+  name varchar
 }
 
 Ref: User.userId < Order.userId 
 Ref: Order.detailno < Basket.detailno
-Ref: Basket.dishId > Dishes.dishId
+Ref: Basket.dishId < Dishes.dishId
 Ref: User.userId < Bonus.userId
 Ref: Menu.menuId < Dishes.menuId
-Ref: Dishes.recipeId < recipe.recipeId
-Ref: Dishes.dishId <Price.dishId
-Ref: referencedDishes.dishId > Dishes.dishId
-Ref: recipe.ingredientId < ingredient.ingredientId
-Ref: ingredient.ingredientId < reservedIngredients.ingredientId
-Ref: Order.orderId<reservedIngredients.orderId
-Ref: ingredientOrder.ingredientId< ingredient.ingredientId
+Ref: Dishes.recipeId < Recipe.recipeId
+Ref: Dishes.coefficientId <Coefficient.coefficientId
+Ref: ReferencedDishes.dishId > Dishes.dishId
+Ref: Recipe.ingredientId < Ingredient.ingredientId
+Ref: Ingredient.ingredientId < ReservedIngredients.ingredientId
+Ref: Order.orderId<ReservedIngredients.orderId
+Ref: ingredientOrder.ingredientId< Ingredient.ingredientId
 Ref: Order.paymentId<Payment.paymentId
-Ref: Payment.paymentId<Bonus.paymentId
-
-
+Ref: Bonus.paymentId- Payment.paymentId
+Ref: Dishes.dishId< Discount.dishId
+Ref: Order.orderStatusId< OrderStatus.orderStatusId
+Ref: Order.typeofDeliveryId< TypeofDelivery.typeofDeliveryId
+REf: TypeofPayment.paymentId> Payment.paymentId
+Ref: MenuCategory.menuCategoryid> Menu.menuCategoryid

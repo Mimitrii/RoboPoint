@@ -14,3 +14,5 @@
 
 
 ## 6.2 Модель данных
+[Postgresql](6_UML/ERD.sql)
+![ERD](images/6_InfoMod/ERD.png)

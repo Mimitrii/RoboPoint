@@ -1,5 +1,6 @@
 CREATE TABLE "User" (
   "userId" varchar PRIMARY KEY,
+  "userStatusid" varchar,
   "name" varchar,
   "latname" varchar,
   "surname" varchar,
@@ -164,6 +165,12 @@ CREATE TABLE "MenuCategory" (
   "name" varchar
 );
 
+CREATE TABLE "UserStatus" (
+  "userStatusid" varchar PRIMARY KEY,
+  "userId" varchar,
+  "name" varchar
+);
+
 ALTER TABLE "Order" ADD FOREIGN KEY ("userId") REFERENCES "User" ("userId");
 
 ALTER TABLE "Basket" ADD FOREIGN KEY ("detailno") REFERENCES "Order" ("detailno");
@@ -201,3 +208,5 @@ ALTER TABLE "TypeofDelivery" ADD FOREIGN KEY ("typeofDeliveryId") REFERENCES "Or
 ALTER TABLE "TypeofPayment" ADD FOREIGN KEY ("paymentId") REFERENCES "Payment" ("paymentId");
 
 ALTER TABLE "MenuCategory" ADD FOREIGN KEY ("menuCategoryid") REFERENCES "Menu" ("menuCategoryid");
+
+ALTER TABLE "UserStatus" ADD FOREIGN KEY ("userId") REFERENCES "User" ("userId");

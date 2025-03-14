@@ -1,5 +1,6 @@
 Table User {
   userId varchar [primary key]
+  userStatusid varchar
   name varchar
   latname varchar
   surname varchar
@@ -167,6 +168,12 @@ Table MenuCategory {
   name varchar
 }
 
+Table UserStatus {
+  userStatusid varchar [primary key]
+  userId varchar
+  name varchar
+}
+
 Ref: User.userId < Order.userId 
 Ref: Order.detailno < Basket.detailno
 Ref: Basket.dishId < Dishes.dishId
@@ -186,3 +193,5 @@ Ref: Order.orderStatusId< OrderStatus.orderStatusId
 Ref: Order.typeofDeliveryId< TypeofDelivery.typeofDeliveryId
 REf: TypeofPayment.paymentId> Payment.paymentId
 Ref: MenuCategory.menuCategoryid> Menu.menuCategoryid
+Ref: UserStatus.userId> User.userId
+

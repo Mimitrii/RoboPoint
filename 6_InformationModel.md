@@ -11,3 +11,6 @@
 
 [ClassDiagram](6_UML/ClassDiagram.wsd)
 ![ClassDiagram](images/6_InfoMod/ClassDiagram.png)
+
+
+## 6.2 Модель данных

@@ -40,8 +40,7 @@ CREATE TABLE "Coefficient" (
 
 CREATE TABLE "Menu" (
   "menuId" varchar2 PRIMARY KEY,
-  "name" varchar2,
-  "menuCategoryid" varchar2,
+  "categoryName" varchar2,
   "expiryDateTime" timestamp,
   "activeStatus" boolean
 );
@@ -159,10 +158,10 @@ CREATE TABLE "TypeofPayment" (
   "name" varchar
 );
 
-CREATE TABLE "MenuCategory" (
-  "menuCategoryid" varchar PRIMARY KEY,
+CREATE TABLE "TypeofMenu" (
+  "typeofMenuid" varchar PRIMARY KEY,
   "menuId" varchar,
-  "name" varchar
+  "TypeofMenuName" varchar
 );
 
 CREATE TABLE "UserStatus" (
@@ -207,6 +206,6 @@ ALTER TABLE "TypeofDelivery" ADD FOREIGN KEY ("typeofDeliveryId") REFERENCES "Or
 
 ALTER TABLE "TypeofPayment" ADD FOREIGN KEY ("paymentId") REFERENCES "Payment" ("paymentId");
 
-ALTER TABLE "MenuCategory" ADD FOREIGN KEY ("menuCategoryid") REFERENCES "Menu" ("menuCategoryid");
+ALTER TABLE "TypeofMenu" ADD FOREIGN KEY ("menuId") REFERENCES "Menu" ("menuId");
 
 ALTER TABLE "UserStatus" ADD FOREIGN KEY ("userId") REFERENCES "User" ("userId");

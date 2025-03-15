@@ -40,8 +40,7 @@ Table Coefficient {
 
 Table Menu {
   menuId varchar2 [primary key]
-  name varchar2
-  menuCategoryid varchar2
+  categoryName varchar2
   expiryDateTime timestamp
   activeStatus boolean 
 }
@@ -162,10 +161,10 @@ Table TypeofPayment {
   name varchar
 }
 
-Table MenuCategory {
-  menuCategoryid varchar [primary key]
+Table TypeofMenu {
+  typeofMenuid varchar [primary key]
   menuId varchar
-  name varchar
+  TypeofMenuName varchar
 }
 
 Table UserStatus {
@@ -192,6 +191,6 @@ Ref: Dishes.dishId< Discount.dishId
 Ref: Order.orderStatusId< OrderStatus.orderStatusId
 Ref: Order.typeofDeliveryId< TypeofDelivery.typeofDeliveryId
 REf: TypeofPayment.paymentId> Payment.paymentId
-Ref: MenuCategory.menuCategoryid> Menu.menuCategoryid
+Ref: TypeofMenu.menuId> Menu.menuId
 Ref: UserStatus.userId> User.userId
 

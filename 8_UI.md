@@ -26,11 +26,11 @@
 
 ![alt text](<images/8_UI/Android Medium - 17.png>)
 
-### WF 7 Страница выбора категорий меню
+### WF 7 Страница выбора категорий блюд
 
 ![alt text](<images/8_UI/Android Medium - 6.png>)
 
-### WF 8 Страница выбора блюд категории
+### WF 8 Страница выбора категорий блюд и самих блюд
 
 ![alt text](<images/8_UI/Android Medium - 7.png>)
 

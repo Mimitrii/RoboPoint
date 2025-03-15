@@ -20,23 +20,23 @@ paths:
               $ref: '#/components/schemas/User'
         required: true
       responses:
-        "200":
-          $ref: '#/components/responses/200'
+        '200':
+          $ref: '#/components/responses/auth200'
+        '401':
+          $ref: '#/components/responses/auth401'
         '404':
           $ref: '#/components/responses/404'
         '409':
-          $ref: '#/components/responses/409'
-        '410':
-          $ref: '#/components/responses/410'          
-        '401':
-          $ref: '#/components/responses/401'
+          oneOf:
+            - $ref: '#/components/responses/EmailExistsError'
+            - $ref: '#/components/responses/PhoneExistsError'
         '500':
-          $ref: '#/components/responses/500'          
+          $ref: '#/components/responses/InternalServerError'         
   /users/login:
     post:
       tags:
         - Пользователь
-      summary: Аутентификация пользователя
+      summary: Авторизоваться в системе
       security:
         - bearerAuth: []
       operationId: authUser
@@ -58,14 +58,47 @@ paths:
                 - password
       responses:
         '200':
-          $ref: '#/components/responses/auth200'
+          $ref: '#/components/responses/200'
         '401':
           $ref: '#/components/responses/401'
         '404':
           $ref: '#/components/responses/404'
-
-
-
+        '500':
+          $ref: '#/components/responses/500' 
+  /menu:  
+    get:
+      tags:
+        - Категории блюд
+      summary: Ознакомится с меню
+      security:
+       - bearerAuth: []
+      description: Получить список категорий блюд
+      operationId: menuCategory
+      parameters:
+        - in: query
+          name: TypeofMenu
+          schema:
+            type: string
+            maxLength: 150
+            minLength: 2
+          description: Фильтр по кухням и видам меню
+      responses:
+        '200':
+          description: Cписок категорий блюд
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/menu'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500' 
 
 
 components:
@@ -140,7 +173,18 @@ components:
         emailSending:
           type: boolean
           description: Чекбокс рассылки по E-mail и информирования о скидках и акциях
-          nullable: false 
+          nullable: false
+    menu:
+      description: Категории блюд
+      type: object
+      properties:
+        TypeofMenuName: 
+          type: string
+          maxLength: 150
+          minLength: 2
+          description: Виды и кухни меню
+        name:
+          $ref: '#/components/schemas/categoryName'
   responses:
     '200':
       description: OK
@@ -187,7 +231,17 @@ components:
                 type: string
                 nullable: false
             description: Текст сообщения об ошибке
-    '401':
+    UserNotFound:
+      description: Пользователь не найден
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "User not Found"
+    auth401:
       description: Неправильный логин или пароль
       content:
         application/json:
@@ -196,7 +250,8 @@ components:
             properties:
               error:
                 type: string
-    '409':
+                example: "Invalid credentials"
+    'EmailExistsError':
       description: Пользователь с таким email уже существует
       content:
         application/json:
@@ -205,7 +260,8 @@ components:
             properties:
               error:
                 type: string
-    '410':
+                example: "User with this email already exists"
+    'PhoneExistsError':
       description: Пользователь с таким номером телефона уже существует
       content:
         application/json:
@@ -214,6 +270,27 @@ components:
             properties:
               error:
                 type: string
+                example: "User with this phone number already exists"
+    '401':
+      description: Пользователь не авторизован
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "User not authorized"
+    '400':
+      description: Не верный запрос
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "User not authorized"
     '500':
       description: Внутренняя ошибка сервера
       content:
@@ -223,6 +300,7 @@ components:
             properties:
               error:
                 type: string
+                example: "Bad Request"
   parameters:
     userId:
       name: userId
@@ -235,135 +313,8 @@ components:
         type: string
         maxLength: 19
         example: ID00001
-
-
-
-
-
-sdasd
-    UserOrders:
-      type: object
-      description: Успешное выполнение операции
-      properties:
-        orderId:
-          type: string
-          maxLength: 19
-          description: Номер заказа
-          example: OR00001
-        dateTime:
-          type: string
-          format: date-time
-          maxLength: 19
-          description: Дата, время оформления заказа 
-          example: '2024-10-15 10:00:00'
-        status:
-          type: string
-          description: Статус заказа
-          enum:
-          - new
-          - inProccess
-          - done
-          - received
-        typeOfDelivery:
-          type: string
-          description: Способ получения
-          enum:
-          - inRestaurant
-          - toGo
-        paymentID:
-          type: string
-          maxLength: 19
-          description: Номер платежа
-          example: P00001
-        discount:
-          type: integer
-          format: int64
-          maxLength: 36
-          description: Скидка оплаты заказ - списание бонусов
-          example: 200
-        total:
-          type: number
-          format: float
-          maxLength: 39
-          description: Общая сумма к оплате заказа
-          example: 800.53
-        dishes:
-          type: array
-          $ref: "#/components/schemas/UserDishes"        
-    dishReview:
-      type: object
-      description: Добавление отзыва о блюде
-      properties:
-        orderId:
-          type: string
-          maxLength: 19
-          description: Номер заказа
-          example: OR00001
-        dishId:
-            type: string
-            maxLength: 19
-            description: Уникальный идентификатор блюда
-            example: DSH00001
-        ratingReview:
-          type: string
-          description: Рейтинг заказа
-          enum:
-          - Отвратительно
-          - Плохо
-          - Нормально
-          - Хорошо
-          - Отлично
-        ratingText:
-          type: string
-          maxLength: 250
-          description: Текст отзыва о блюде
-          example: Очень соленая картошка, обгоревшая
-    UserDishes:
-      type: object
-      description: Перечень и количество выбранных блюд 
-      properties:
-        dishId:
-          type: string
-          maxLength: 250
-          description: Номер блюда
-          example: DH00001
-        quantity:
-          type: integer
-          format: int64
-          maxLength: 36
-          description: Количество блюд
-          example: 200
-    authLogin:
-      type: object
-      description: Данные для авторизации пользователя
-      properties:
-        userPhone:
-          type: integer
-          format: int64
-          maxLength: 36
-          description: Номер телефона пользователя
-          example: 79659474582
-        userPassword:
-          type: string
-          maxLength: 250
-          description: Номер блюда
-          example: jH58!hd8KL
-    UserInfo:
-    type: object
-    description: Данные о пользователе
-    properties:
-      firstName:
-        type: string
-        maxLength: 250
-        description: Фамилия пользователя
-        example: Иванов
-      lastName:
-        type: string
-        maxLength: 250
-        description: Имя пользователя
-        example: Сидр
-      middleName:
-        type: string
-        maxLength: 250
-        description: Отчество пользователя
-        example: Петрович
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

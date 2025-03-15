@@ -143,13 +143,11 @@ CREATE TABLE "Discount" (
 
 CREATE TABLE "OrderStatus" (
   "orderStatusId" varchar PRIMARY KEY,
-  "orderId" varchar,
   "name" varchar
 );
 
 CREATE TABLE "TypeofDelivery" (
   "typeofDeliveryId" varchar PRIMARY KEY,
-  "orderId" varchar,
   "name" varchar
 );
 

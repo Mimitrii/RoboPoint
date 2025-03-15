@@ -145,14 +145,12 @@ Table Discount {
 
 Table OrderStatus {
   orderStatusId varchar [primary key]
-  orderId varchar
   name varchar
 }
 
 
 Table TypeofDelivery {
   typeofDeliveryId varchar [primary key]
-  orderId varchar
   name varchar
 }
 

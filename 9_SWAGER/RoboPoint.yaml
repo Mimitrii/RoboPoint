@@ -198,7 +198,25 @@ paths:
         '404':
           $ref: '#/components/responses/404'
         '500':
-          $ref: '#/components/responses/500'
+          $ref: '#/components/responses/500'      
+  /cart/{orderId}:
+    patch:
+      tags: 
+        - Работа с заказом и корзиной
+      security:
+        - bearerAuth: []
+      summary: Оформление заказа
+      description: Обновляет временный заказ добавляя информацию о времени доставки и способе употребления пищи.
+      operationId: сartUpdate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CheckoutRequest'
+      responses:
+        '200':
+          description: Заказ успешно обновлен
 
 
 components:
@@ -511,7 +529,18 @@ components:
                 type: string
                 example: "Bad Request"
   parameters:
-    userId:
+    typeOfDelivery:
+      name: userId
+      in: path
+      description: Уникальный ID пользователя
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+        maxLength: 19
+        example: ID00001
+    timeOfDelivery:
       name: userId
       in: path
       description: Уникальный ID пользователя

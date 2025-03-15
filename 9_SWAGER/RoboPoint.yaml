@@ -56,7 +56,8 @@ paths:
                   description: Логин
                 password:
                   type: string
-                  description: Пароль
+                  format: password
+                  example: "SecureP@ss123"
               required:
                 - login
                 - password
@@ -69,6 +70,60 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500' 
+  /auth/password/reset:
+    post:
+      tags:
+        - Пользователь
+      summary: Запрос на восстановление пароля
+      description: Отправляет email с ссылкой для восстановления пароля
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: "user@example.com"
+      responses:
+        '200':
+          $ref: '#/components/responses/200'
+        '400':
+          description: Некорректный email
+  /auth/password/reset/confirm:
+    post:
+      tags:
+        - Пользователь
+      summary: Подтверждение сброса пароля
+      description: Позволяет пользователю задать новый пароль после получения токена
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - token
+                - newPassword
+              properties:
+                token:
+                  type: string
+                  example: 6CKmM8eWBK6VIRrVlioBkZBAHbSannV39qDN+c0S/sQSf8UZNq9Th1lFkLNLTGlJ
+                newPassword:
+                  type: string
+                  format: password
+                  description: Новый пароль пользователя
+                  example: "SecureP@ss123"
+      responses:
+        '200':
+          description: Пароль успешно обновлен
+        '400':
+          $ref: '#/components/responses/400'
+
   /menu:  
     get:
       tags:
@@ -161,6 +216,8 @@ paths:
             $ref: '#/components/responses/404'
           '500':
             $ref: '#/components/responses/500' 
+
+
   /cart/checkout:
     post:
       tags: 
@@ -191,8 +248,6 @@ paths:
                 oneOf:
                   - $ref: '#/components/schemas/CheckoutBadResponse'
                   - $ref: '#/components/schemas/CheckoutQtyResponse'
-        '400':
-          $ref: '#/components/responses/400'
         '401':
           $ref: '#/components/responses/401'
         '404':
@@ -208,17 +263,144 @@ paths:
       summary: Оформление заказа
       description: Обновляет временный заказ добавляя информацию о времени доставки и способе употребления пищи.
       operationId: сartUpdate
+      parameters:
+        - $ref: '#/components/parameters/orderId'
+        - $ref: '#/components/parameters/typeOfDeliveryId'
+        - $ref: '#/components/parameters/timeOfDelivery'
+      responses:
+        '200':
+          description: Заказ успешно обновлён
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'  
+  /orders/payment:
+    post:
+      tags: 
+        - Работа с заказом и корзиной
+      security:
+        - bearerAuth: []
+      summary: Инициация оплаты заказа
+      description: Инициирует процесс оплаты для указанного заказа и возвращает ссылку для перенаправления на платежный шлюз.
+      operationId: initiatePayment
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CheckoutRequest'
+              $ref: '#/components/schemas/PaymentRequest'
+      responses:
+        '303':
+          description: Перенаправление на платежный шлюз
+          headers:
+            Location:
+              schema:
+                type: string
+                format: url
+              description: URL платежного шлюза
+              example: https://help.reg.ru/support/hosting/redirekty/kak-sdelat-redirekt-na-html
+              # Ссылка на оплату может выглядеть примерно вот так
+              # example: https://paymentgateway.com/checkout?transaction_id=123456789&amount=1000.00&currency=USD&return_url=https://yourwebsite.com/payment-success&cancel_url=https://yourwebsite.com/payment-cancel
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500' 
+  /payment-status:
+    post:
+      tags:
+        - Платёжная система
+      summary: Получить статус оплаты
+      description: Получить уведомление о завершении оплаты через webhook от платёжной системы.
+      operationId: paymentStatus
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/requestPaymentStatus'
       responses:
         '200':
-          description: Заказ успешно обновлен
+          $ref: '#/components/responses/200'
+        '400':
+          $ref: '#/components/responses/400'
+  /orders/{orderId}/status:
+    get:
+      tags: 
+        - Управление заказами
+      security:
+        - bearerAuth: []
+      summary: Просмотр статуса заказа на информационном табло
+      description: Возвращает текущий статус указанного заказа
+      operationId: userOrderStatus
+      parameters:
+        - $ref: '#/components/parameters/orderId'
+      responses:
+        '200':
+          description: Текущий статус заказа
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  orderStatus:
+                    type: string
+                    enum:
+                      - Временный
+                      - Новый
+                      - в производстве
+                      - Приготовлен
+                      - На выдаче
+                      - Утилизирован
+                      - Завершен
+                      - Отменен
+                      - Ошибка
+                    description: Статус заказа
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
 
-
+  /bonus:  
+    get:
+      tags:
+        - Бонусная система
+      summary: Списать бонусные баллы
+      security:
+       - bearerAuth: []
+      description: Получить информацию о бонусных баллах пользователя
+      operationId: getBonus
+      responses:
+        '200':
+          description: Cписок категорий блюд
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  totalBonus:
+                    type: integer
+                    example: 223
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500' 
+          
 components:
   schemas:
     User:
@@ -287,6 +469,12 @@ components:
           type: boolean
           description: Чекбокс рассылки по E-mail и информирования о скидках и акциях
           nullable: false
+        status:
+          type: string
+          enum:
+            - Новый
+            - Зарегестрирован
+            - Заблокирован
     Dishes:
       description: Блюда
       required:
@@ -453,7 +641,49 @@ components:
           type: integer
           maximum: 29
           description: Количество добавляемых блюд
-          example: 3
+          example: 
+    PaymentRequest:
+      type: object
+      required:
+        - tempOrderId
+      properties:
+        tempOrderId:
+          type: string
+          maxLength: 19
+          example: OD00001       
+          description: Уникальный идентификатор заказа
+    requestPaymentStatus:
+      type: object
+      properties:
+        orderId:
+          type: string
+          description: Уникальный идентификатор заказа
+          maxLength: 150
+          minLength: 2
+        paymentStatus:
+          type: string
+          enum: [completed, failed]
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              description: Код ошибки
+              example: "INSUFFICIENT_FUNDS"
+            message:
+              type: string
+              description: Описание ошибки
+              example: "Недостаточно средств на счете"
+            details:
+              type: string
+              description: Подробности ошибки
+              example: "Платеж был отклонен, так как на счету недостаточно средств."
+            transactionId:
+              type: string
+              description: Идентификатор транзакции в платёжной системе
+      required:
+        - orderId
+        - paymentStatus
   responses:
     '200':
       description: OK
@@ -529,28 +759,34 @@ components:
                 type: string
                 example: "Bad Request"
   parameters:
-    typeOfDelivery:
-      name: userId
+    orderId:
+      name: orderId
       in: path
-      description: Уникальный ID пользователя
+      description: Уникальный идентификатор заказа
       required: true
-      style: simple
-      explode: false
+      schema:
+          type: string
+          maxLength: 19
+          example: OD00001       
+          description: Уникальный идентификатор заказа
+    typeOfDeliveryId:
+      name: typeOfDeliveryId
+      in: query
+      description: Уникальный ID способов употребления пищи
+      required: false
       schema:
         type: string
         maxLength: 19
-        example: ID00001
+        example: "TOD00001"
     timeOfDelivery:
-      name: userId
-      in: path
-      description: Уникальный ID пользователя
-      required: true
-      style: simple
-      explode: false
+      name: timeOfDelivery
+      in: query
+      description: Время готовности заказа
+      required: false
       schema:
         type: string
-        maxLength: 19
-        example: ID00001
+        format: date-time
+        example: "2024-10-15T10:00:00Z"  
   securitySchemes:
     bearerAuth:
       type: http

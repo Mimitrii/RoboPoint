@@ -24,7 +24,7 @@
 
 ### WF 6 Страница в восстановления пароля
 
-![alt text](images/8_UI/Android Medium - 17.png)
+![alt text](<images/8_UI/Android Medium - 17.png>)
 
 ### WF 7 Страница выбора категорий меню
 
@@ -76,4 +76,4 @@
 
 ## 8.2 Прототип приложения
 
-[PrototypeFigma](https://www.figma.com/proto/lOVrO6VRC6CVtk29TCGyeL/Application-Project?node-id=2033-454&t=IG4VsRk39Vm2mu25-1)
+[PrototypeFigma](https://www.figma.com/proto/lOVrO6VRC6CVtk29TCGyeL/Application-Project?node-id=0-1&p=f&t=FCjXm22IvFeecmqv-0&scaling=scale-down&content-scaling=fixed&starting-point-node-id=34%3A2392)

@@ -1,0 +1,369 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: "RoboPoint"
+  description: The API для заказа блюд в приложении
+paths:
+  /users:     
+    post:
+      tags:
+      - Пользователь
+      summary: Зарегистрироваться в системе
+      description: Регистрация пользователя в мобильном приложении с целью последующего оформления заказа
+      security:
+        - bearerAuth: []
+      operationId: createUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        "200":
+          $ref: '#/components/responses/200'
+        '404':
+          $ref: '#/components/responses/404'
+        '409':
+          $ref: '#/components/responses/409'
+        '410':
+          $ref: '#/components/responses/410'          
+        '401':
+          $ref: '#/components/responses/401'
+        '500':
+          $ref: '#/components/responses/500'          
+  /users/login:
+    post:
+      tags:
+        - Пользователь
+      summary: Аутентификация пользователя
+      security:
+        - bearerAuth: []
+      operationId: authUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                login:
+                  type: string
+                  description: Логин
+                password:
+                  type: string
+                  description: Пароль
+              required:
+                - login
+                - password
+      responses:
+        '200':
+          $ref: '#/components/responses/auth200'
+        '401':
+          $ref: '#/components/responses/401'
+        '404':
+          $ref: '#/components/responses/404'
+
+
+
+
+
+components:
+  schemas:
+    User:
+      description: Заполнение информации о пользователе
+      required:
+      - name
+      - phoneNumber
+      - birthdayDate
+      - email
+      - password
+      - agreement
+      - emailSending
+      type: object
+      properties:
+        lastName:
+          maxLength: 150
+          minLength: 2
+          type: string
+          description: Фамилия пользователя
+          nullable: false
+        name:
+          maxLength: 150
+          minLength: 2
+          type: string
+          description: Имя пользователя
+          nullable: false
+        surname:
+          maxLength: 150
+          minLength: 2
+          type: string
+          description: Отчество пользователя
+          nullable: false
+        phoneNumber:
+          maxLength: 2000
+          minLength: 50
+          type: string
+          description: Телефон регистрации
+          example: +7 999 888 77 66
+        birthdayDate:
+          type: string
+          description: Дата рождения пользователя
+          format: date
+          nullable: false
+          example: '2021-08-30'
+          pattern: '^[0-9]{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12][0-9]|3[01])$'
+          minLength: 10
+          maxLength: 10
+          x-42c-format: o:date
+        sex:
+          type: boolean
+          description: Доступность столика для бронирования
+          nullable: false  
+        email:
+          maxLength: 500
+          minLength: 2
+          type: string
+          description: email пользователя
+          nullable: false
+          example: example@email.com
+        password:
+          maxLength: 150
+          minLength: 2
+          type: string
+          description: Пароль
+          nullable: false
+        agreement:
+          type: boolean
+          description: Чекбокс пользовательское соглашение и положение об обработке и защите персональных данных
+          nullable: false  
+        emailSending:
+          type: boolean
+          description: Чекбокс рассылки по E-mail и информирования о скидках и акциях
+          nullable: false 
+  responses:
+    '200':
+      description: OK
+    auth200:
+      description: Аутентификация выполнена успешно
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - token
+            properties:
+              token:
+                type: string
+                example: 6CKmM8eWBK6VIRrVlioBkZBAHbSannV39qDN+c0S/sQSf8UZNq9Th1lFkLNLTGlJ
+    '404':
+      description: Что-то пошло не так...
+      content:
+        application/json:
+          schema:
+            required:
+            - code
+            - errorId
+            - messageEn
+            - messageRu
+            type: object
+            properties:
+              errorId:
+                type: integer
+              code:
+                maximum: 599
+                minimum: 400
+                type: integer
+              messageRu:
+                maxLength: 500
+                minLength: 1
+                pattern: "([А-Яа-я0-9-]+)"
+                type: string
+                nullable: false
+              messageEn:
+                maxLength: 500
+                minLength: 1
+                pattern: "([A-Za-z0-9-]+)"
+                type: string
+                nullable: false
+            description: Текст сообщения об ошибке
+    '401':
+      description: Неправильный логин или пароль
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+    '409':
+      description: Пользователь с таким email уже существует
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+    '410':
+      description: Пользователь с таким номером телефона уже существует
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+    '500':
+      description: Внутренняя ошибка сервера
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+  parameters:
+    userId:
+      name: userId
+      in: path
+      description: Уникальный ID пользователя
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+        maxLength: 19
+        example: ID00001
+
+
+
+
+
+sdasd
+    UserOrders:
+      type: object
+      description: Успешное выполнение операции
+      properties:
+        orderId:
+          type: string
+          maxLength: 19
+          description: Номер заказа
+          example: OR00001
+        dateTime:
+          type: string
+          format: date-time
+          maxLength: 19
+          description: Дата, время оформления заказа 
+          example: '2024-10-15 10:00:00'
+        status:
+          type: string
+          description: Статус заказа
+          enum:
+          - new
+          - inProccess
+          - done
+          - received
+        typeOfDelivery:
+          type: string
+          description: Способ получения
+          enum:
+          - inRestaurant
+          - toGo
+        paymentID:
+          type: string
+          maxLength: 19
+          description: Номер платежа
+          example: P00001
+        discount:
+          type: integer
+          format: int64
+          maxLength: 36
+          description: Скидка оплаты заказ - списание бонусов
+          example: 200
+        total:
+          type: number
+          format: float
+          maxLength: 39
+          description: Общая сумма к оплате заказа
+          example: 800.53
+        dishes:
+          type: array
+          $ref: "#/components/schemas/UserDishes"        
+    dishReview:
+      type: object
+      description: Добавление отзыва о блюде
+      properties:
+        orderId:
+          type: string
+          maxLength: 19
+          description: Номер заказа
+          example: OR00001
+        dishId:
+            type: string
+            maxLength: 19
+            description: Уникальный идентификатор блюда
+            example: DSH00001
+        ratingReview:
+          type: string
+          description: Рейтинг заказа
+          enum:
+          - Отвратительно
+          - Плохо
+          - Нормально
+          - Хорошо
+          - Отлично
+        ratingText:
+          type: string
+          maxLength: 250
+          description: Текст отзыва о блюде
+          example: Очень соленая картошка, обгоревшая
+    UserDishes:
+      type: object
+      description: Перечень и количество выбранных блюд 
+      properties:
+        dishId:
+          type: string
+          maxLength: 250
+          description: Номер блюда
+          example: DH00001
+        quantity:
+          type: integer
+          format: int64
+          maxLength: 36
+          description: Количество блюд
+          example: 200
+    authLogin:
+      type: object
+      description: Данные для авторизации пользователя
+      properties:
+        userPhone:
+          type: integer
+          format: int64
+          maxLength: 36
+          description: Номер телефона пользователя
+          example: 79659474582
+        userPassword:
+          type: string
+          maxLength: 250
+          description: Номер блюда
+          example: jH58!hd8KL
+    UserInfo:
+    type: object
+    description: Данные о пользователе
+    properties:
+      firstName:
+        type: string
+        maxLength: 250
+        description: Фамилия пользователя
+        example: Иванов
+      lastName:
+        type: string
+        maxLength: 250
+        description: Имя пользователя
+        example: Сидр
+      middleName:
+        type: string
+        maxLength: 250
+        description: Отчество пользователя
+        example: Петрович

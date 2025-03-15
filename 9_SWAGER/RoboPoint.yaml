@@ -27,9 +27,13 @@ paths:
         '404':
           $ref: '#/components/responses/404'
         '409':
-          oneOf:
-            - $ref: '#/components/responses/EmailExistsError'
-            - $ref: '#/components/responses/PhoneExistsError'
+          description: Конфликт - пользователь уже существует
+          content:
+            application/json:
+             schema:
+                oneOf:
+                  - $ref: '#/components/schemas/EmailExistsError'
+                  - $ref: '#/components/schemas/PhoneExistsError'
         '500':
           $ref: '#/components/responses/InternalServerError'         
   /users/login:
@@ -68,7 +72,7 @@ paths:
   /menu:  
     get:
       tags:
-        - Категории блюд
+        - Меню
       summary: Ознакомится с меню
       security:
        - bearerAuth: []
@@ -90,7 +94,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/menu'
+                  $ref: '#/components/schemas/Menu'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -100,7 +104,64 @@ paths:
         '500':
           $ref: '#/components/responses/500' 
 
-
+  /dishes:
+      get:
+        tags: 
+          - Меню
+        security:
+          - bearerAuth: []
+        summary: Ознакомится с меню
+        description: Получить список блюд
+        parameters:
+          - in: query
+            name: categoryName
+            required: true
+            schema:
+              type: string
+              maxLength: 150
+              minLength: 2
+              description: Kатегории блюд
+              example: "Напитки"
+            description: Фильтр по категории блюда
+          - in: query
+            name: price_min
+            schema:
+              type: number
+            description: Минимальная цена блюда
+          - in: query
+            name: price_max
+            schema:
+              type: number
+            description: Максимальная цена блюда
+          - in: query
+            name: page
+            schema:
+              type: integer
+              default: 1
+            description: Номер страницы для пагинации
+          - in: query
+            name: pageSize
+            schema:
+              type: integer
+              default: 10
+            description: Количество блюд на странице
+        responses:
+          '200':
+            description: Cписок категорий блюд
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Dishes'
+          '400':
+            $ref: '#/components/responses/400'
+          '401':
+            $ref: '#/components/responses/401'
+          '404':
+            $ref: '#/components/responses/404'
+          '500':
+            $ref: '#/components/responses/500' 
 components:
   schemas:
     User:
@@ -174,17 +235,99 @@ components:
           type: boolean
           description: Чекбокс рассылки по E-mail и информирования о скидках и акциях
           nullable: false
-    menu:
-      description: Категории блюд
+    Dishes:
+      description: Блюда
+      required:
+      - dishId
+      - name
+      - description
+      - menuId
+      type: object
+      properties:
+        dishId:
+          type: string
+          maxLength: 19
+          example: DI00001
+        name:
+          type: string
+          description: Наименование блюда
+          maxLength: 50
+          minLength: 2
+          example: "КокаКолла"
+        description:
+          type: string
+          description: Описание блюда
+          maxLength: 250
+          minLength: 2
+          example: "КокаКолла"
+        photo:
+          type: string
+          format: url
+          example: https://static.wikia.nocookie.net/harrypotter/images/c/c5/Pumpkin_Juice_WWHP.jpg/revision/latest/scale-to-width-down/1000?cb=20110529053444
+        combo:
+          type: boolean
+          description: Сборное блюдо 
+          example: 'Y'
+        proteins:
+          type: number
+          format: float
+          description: Количество протеинов
+          example: 120
+        fats:
+          type: number
+          format: float
+          description: Количество жиров
+          example: 23
+        carbohydrates:
+          type: number
+          format: float
+          description: Количество углеводов
+          example: 22
+        calorie:
+          type: number
+          format: float
+          description: Количество каллорий
+          example: 220
+        price:
+          type: number
+          format: float
+          description: Цена блюда
+          example: 485.23
+    Menu:
+      description: Виды меню и категории блюд
+      required:
+      - TypeofMenuName
       type: object
       properties:
         TypeofMenuName: 
           type: string
-          maxLength: 150
+          maxLength: 50
           minLength: 2
           description: Виды и кухни меню
-        name:
-          $ref: '#/components/schemas/categoryName'
+        categoryName:
+          $ref: '#/components/schemas/Category'
+    Category:
+      description: категории блюд
+      required:
+      - categoryName
+      type: object
+      properties:
+        categoryName:
+          type: string
+          maxLength: 50
+          minLength: 2
+          description: Kатегории блюд
+          example: "Напитки"
+    EmailExistsError:
+          type: object
+          properties:
+            message:
+              example: "Пользователь с таким email уже существует"
+    PhoneExistsError:
+          type: object
+          properties:
+            message:
+              example: "Пользователь с таким номером телефона уже существует"
   responses:
     '200':
       description: OK
@@ -251,28 +394,8 @@ components:
               error:
                 type: string
                 example: "Invalid credentials"
-    'EmailExistsError':
-      description: Пользователь с таким email уже существует
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-                example: "User with this email already exists"
-    'PhoneExistsError':
-      description: Пользователь с таким номером телефона уже существует
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-                example: "User with this phone number already exists"
-    '401':
-      description: Пользователь не авторизован
+    '400':
+      description: Не верный запрос
       content:
         application/json:
           schema:
@@ -281,8 +404,8 @@ components:
               error:
                 type: string
                 example: "User not authorized"
-    '400':
-      description: Не верный запрос
+    '401':
+      description: Пользователь не авторизован
       content:
         application/json:
           schema:

@@ -21,9 +21,9 @@ paths:
         required: true
       responses:
         '200':
-          $ref: '#/components/responses/auth200'
+          description: Аутентификация выполнена успешно
         '401':
-          $ref: '#/components/responses/auth401'
+          description: Неправильный логин или пароль
         '404':
           $ref: '#/components/responses/404'
         '409':
@@ -103,7 +103,6 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500' 
-
   /dishes:
       get:
         tags: 
@@ -162,6 +161,46 @@ paths:
             $ref: '#/components/responses/404'
           '500':
             $ref: '#/components/responses/500' 
+  /cart/checkout:
+    post:
+      tags: 
+        - Работа с заказом и корзиной
+      security:
+        - bearerAuth: []
+      summary: Оформление заказа
+      description: Оформляет временный заказ на основе текущего содержимого корзины пользователя, проверяет наличие ингредиентов на производстве. Предлагает замену блюд в случае отсутствия ингредиентов.
+      operationId: checkoutCart
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CheckoutRequest'
+      responses:
+        '200':
+          description: Заказ успешно оформлен
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckoutResponse'
+        '409':
+          description: Отсутствует блюдо
+          content:
+            application/json:
+             schema:
+                oneOf:
+                  - $ref: '#/components/schemas/CheckoutBadResponse'
+                  - $ref: '#/components/schemas/CheckoutQtyResponse'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+
+
 components:
   schemas:
     User:
@@ -178,25 +217,21 @@ components:
       properties:
         lastName:
           maxLength: 150
-          minLength: 2
           type: string
           description: Фамилия пользователя
           nullable: false
         name:
           maxLength: 150
-          minLength: 2
           type: string
           description: Имя пользователя
           nullable: false
         surname:
           maxLength: 150
-          minLength: 2
           type: string
           description: Отчество пользователя
           nullable: false
         phoneNumber:
-          maxLength: 2000
-          minLength: 50
+          maxLength: 200
           type: string
           description: Телефон регистрации
           example: +7 999 888 77 66
@@ -215,15 +250,14 @@ components:
           description: Доступность столика для бронирования
           nullable: false  
         email:
-          maxLength: 500
-          minLength: 2
+          maxLength: 200
           type: string
           description: email пользователя
           nullable: false
           example: example@email.com
         password:
           maxLength: 150
-          minLength: 2
+          minLength: 6
           type: string
           description: Пароль
           nullable: false
@@ -246,6 +280,7 @@ components:
       properties:
         dishId:
           type: string
+          description: Уникальный идентификатор блюда
           maxLength: 19
           example: DI00001
         name:
@@ -328,11 +363,82 @@ components:
           properties:
             message:
               example: "Пользователь с таким номером телефона уже существует"
+    CheckoutResponse:
+      type: object
+      properties:
+        orderId:
+          type: string
+          maxLength: 19
+          example: OD00001       
+          description: Уникальный идентификатор заказа
+        message:
+          type: string
+          maxLength: 250
+          description: Сообщение о статусе заказа
+    CheckoutBadResponse:
+      type: object
+      properties:
+        MissingDishId:
+          type: string
+          description: Уникальный идентификатор блюда ингредиентов которого недостаточно на производстве
+          maxLength: 19
+          example: MD00001
+        MissingDishName:
+          type: string
+          description: Наименование блюда
+          maxLength: 50
+          minLength: 2
+          example: "КокаКолла"
+        dishes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Dishes'
+          description: Блюда не замену      
+        message:
+            type: string
+            maxLength: 250
+            description: Ингредиенты для блюда отсутствуют на производстве выберите блюда на замену
+    CheckoutQtyResponse:
+     type: object
+     properties:
+        dishId:
+          type: string
+          description: Уникальный идентификатор блюда, количество которого ограничено на складе
+          maxLength: 19
+          example: DI00001
+        dishName:
+          type: string
+          description: Наименование блюда
+          maxLength: 50
+          minLength: 2
+          example: "КокаКолла"
+        quantity:
+          type: integer
+          description: Количество блюд доступных для заказа
+          example: 3    
+        message:
+            type: string
+            maxLength: 250
+            description: Количество ингредиентов для блюд ограничено, доступно для заказа N блюд
+    CheckoutRequest:
+      type: object
+      required:
+        - dishId
+        - quantity
+      properties:
+        dishId:
+          type: string
+          description: Уникальный идентификатор блюда
+          maxLength: 19
+          example: DI00001
+        quantity:
+          type: integer
+          maximum: 29
+          description: Количество добавляемых блюд
+          example: 3
   responses:
     '200':
       description: OK
-    auth200:
-      description: Аутентификация выполнена успешно
       content:
         application/json:
           schema:
@@ -374,26 +480,6 @@ components:
                 type: string
                 nullable: false
             description: Текст сообщения об ошибке
-    UserNotFound:
-      description: Пользователь не найден
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-                example: "User not Found"
-    auth401:
-      description: Неправильный логин или пароль
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-                example: "Invalid credentials"
     '400':
       description: Не верный запрос
       content:

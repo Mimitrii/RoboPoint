@@ -28,7 +28,8 @@ Table Dishes {
 }
 
 Table ReferencedDishes {
-  referencedDishesId varchar [primary key]
+  RdId varchar [primary key]
+  referencedDishesId varchar
   dishId varchar 
 }
 
@@ -180,7 +181,7 @@ Ref: User.userId < Bonus.userId
 Ref: Menu.menuId < Dishes.menuId
 Ref: Dishes.recipeId < Recipe.recipeId
 Ref: Dishes.coefficientId <Coefficient.coefficientId
-Ref: ReferencedDishes.dishId > Dishes.dishId
+Ref: ReferencedDishes.referencedDishesId > Dishes.dishId
 Ref: Recipe.ingredientId < Ingredient.ingredientId
 Ref: Ingredient.ingredientId < ReservedIngredients.ingredientId
 Ref: Order.orderId<ReservedIngredients.orderId

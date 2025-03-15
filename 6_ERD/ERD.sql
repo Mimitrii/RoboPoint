@@ -28,7 +28,8 @@ CREATE TABLE "Dishes" (
 );
 
 CREATE TABLE "ReferencedDishes" (
-  "referencedDishesId" varchar PRIMARY KEY,
+  "RdId" varchar PRIMARY KEY,
+  "referencedDishesId" varchar,
   "dishId" varchar
 );
 
@@ -184,7 +185,7 @@ ALTER TABLE "Recipe" ADD FOREIGN KEY ("recipeId") REFERENCES "Dishes" ("recipeId
 
 ALTER TABLE "Coefficient" ADD FOREIGN KEY ("coefficientId") REFERENCES "Dishes" ("coefficientId");
 
-ALTER TABLE "ReferencedDishes" ADD FOREIGN KEY ("dishId") REFERENCES "Dishes" ("dishId");
+ALTER TABLE "ReferencedDishes" ADD FOREIGN KEY ("referencedDishesId") REFERENCES "Dishes" ("dishId");
 
 ALTER TABLE "Ingredient" ADD FOREIGN KEY ("ingredientId") REFERENCES "Recipe" ("ingredientId");
 

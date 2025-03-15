@@ -22,52 +22,58 @@
 
 ![alt text](<images/8_UI/Android Medium - 5.png>)
 
-### WF 6 Страница выбора категорий меню
+### WF 6 Страница в восстановления пароля
+
+![alt text](images/8_UI/Android Medium - 17.png)
+
+### WF 7 Страница выбора категорий меню
 
 ![alt text](<images/8_UI/Android Medium - 6.png>)
 
-### WF 7 Страница выбора блюд категории
+### WF 8 Страница выбора блюд категории
 
 ![alt text](<images/8_UI/Android Medium - 7.png>)
 
-### WF 8 Формирование корзины
+### WF 9 Формирование корзины
 
 ![alt text](<images/8_UI/Android Medium - 8.png>)
 
-### WF 9 Страница корзины. Редактирование и удаление добавленных блюд
+### WF 10 Страница корзины. Редактирование и удаление добавленных блюд
 
 ![alt text](<images/8_UI/Android Medium - 9.png>)
 
-### WF 10 Страница ошибки заказа по отсутствующим игредиентам
+### WF 11 Страница ошибки заказа по отсутствующим игредиентам
 
 ![alt text](<images/8_UI/Android Medium - 10.png>)
 
-### WF 11 Страница выбора способа употребления пищи
+### WF 12 Страница выбора способа употребления пищи
 
 ![alt text](<images/8_UI/Android Medium - 11.png>)
 
-### WF 12 Страница времени приготовления блюд
+### WF 13 Страница времени приготовления блюд
 
 ![alt text](<images/8_UI/Android Medium - 12.png>)
 
-### WF 13 Страница оплаты заказа
+### WF 14 Страница оплаты заказа
 
 ![alt text](<images/8_UI/Android Medium - 13.png>)
 
-### WF 14 Страница оплаты заказа - применение скидки бонусными баллами
+### WF 15 Страница оплаты заказа - применение скидки бонусными баллами
 
 ![alt text](<images/8_UI/Android Medium - 14.png>)
 
-### WF 15 Страница оплаты платежной системы 
+### WF 16 Страница оплаты платежной системы 
 
 ![alt text](<images/8_UI/Android Medium - 15.png>)
 
-### WF 16 Страница подтверждения оплаты 
+### WF 17 Страница подтверждения оплаты 
 
 ![alt text](<images/8_UI/Android Medium - 16.png>)
 
-### WF 16 Информационное табло
+### WF 18 Информационное табло
 
 ![alt text](<images/8_UI/Frame 20.png>)
 
 ## 8.2 Прототип приложения
+
+[PrototypeFigma](https://www.figma.com/proto/lOVrO6VRC6CVtk29TCGyeL/Application-Project?node-id=2033-454&t=IG4VsRk39Vm2mu25-1)

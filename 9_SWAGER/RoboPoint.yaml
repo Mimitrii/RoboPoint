@@ -35,7 +35,7 @@ paths:
                   - $ref: '#/components/schemas/EmailExistsError'
                   - $ref: '#/components/schemas/PhoneExistsError'
         '500':
-          $ref: '#/components/responses/InternalServerError'         
+          $ref: '#/components/responses/500'        
   /users/login:
     post:
       tags:
@@ -400,7 +400,7 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500' 
-          
+
 components:
   schemas:
     User:

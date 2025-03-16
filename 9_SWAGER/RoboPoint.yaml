@@ -127,7 +127,7 @@ paths:
   /menu:  
     get:
       tags:
-        - Меню
+        - Блюдо
       summary: Ознакомится с меню
       security:
        - bearerAuth: []
@@ -161,7 +161,7 @@ paths:
   /dishes:
       get:
         tags: 
-          - Меню
+          - Блюдо
         security:
           - bearerAuth: []
         summary: Ознакомится с меню
@@ -307,7 +307,6 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'  
-  
   /orders/payment:
     post:
       tags: 

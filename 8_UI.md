@@ -49,7 +49,7 @@
 ### WF 12 Страница выбора способа употребления пищи
 
 ![alt text](<images/8_UI/Android Medium - 11.png>)
-
+![alt text](<images/8_UI/Android Medium - 20.png>)
 ### WF 13 Страница времени приготовления блюд
 
 ![alt text](<images/8_UI/Android Medium - 12.png>)
@@ -57,11 +57,11 @@
 ### WF 14 Страница оплаты заказа
 
 ![alt text](<images/8_UI/Android Medium - 13.png>)
-
+![alt text](<images/8_UI/Android Medium - 18.png>)
 ### WF 15 Страница оплаты заказа - применение скидки бонусными баллами
 
 ![alt text](<images/8_UI/Android Medium - 14.png>)
-
+![alt text](<images/8_UI/Android Medium - 19.png>)
 ### WF 16 Страница оплаты платежной системы 
 
 ![alt text](<images/8_UI/Android Medium - 15.png>)

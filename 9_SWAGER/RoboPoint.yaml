@@ -74,7 +74,7 @@ paths:
     post:
       tags:
         - Пользователь
-      summary: Запрос на восстановление пароля
+      summary: Запросить восстановление пароля
       description: Отправляет email с ссылкой для восстановления пароля
       requestBody:
         required: true
@@ -98,7 +98,7 @@ paths:
     post:
       tags:
         - Пользователь
-      summary: Подтверждение сброса пароля
+      summary: Подтвердить сброс пароля
       description: Позволяет пользователю задать новый пароль после получения токена
       requestBody:
         required: true
@@ -181,11 +181,15 @@ paths:
             name: price_min
             schema:
               type: number
+              format: float
+              example: 223.4
             description: Минимальная цена блюда
           - in: query
             name: price_max
             schema:
               type: number
+              format: float
+              example: 563.4
             description: Максимальная цена блюда
           - in: query
             name: page
@@ -224,7 +228,7 @@ paths:
         - Работа с заказом и корзиной
       security:
         - bearerAuth: []
-      summary: Оформление заказа
+      summary: Оформить заказ
       description: Оформляет временный заказ на основе текущего содержимого корзины пользователя, проверяет наличие ингредиентов на производстве. Предлагает замену блюд в случае отсутствия ингредиентов.
       operationId: checkoutCart
       requestBody:
@@ -254,15 +258,40 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'      
-  /cart/{orderId}:
+  /order/{orderId}:
+    get:
+      tags: 
+        - Работа с заказом и корзиной
+      security:
+        - bearerAuth: []
+      summary: Получить информацию о заказе
+      description: Получить информацию заказе - номере, времени доставки и способе употребления пищи.
+      operationId: orderGet
+      parameters:
+        - $ref: '#/components/parameters/orderId'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'  
     patch:
       tags: 
         - Работа с заказом и корзиной
       security:
         - bearerAuth: []
-      summary: Оформление заказа
-      description: Обновляет временный заказ добавляя информацию о времени доставки и способе употребления пищи.
-      operationId: сartUpdate
+      summary: Обновить информацию о заказе
+      description: Обновляет статус заказа, добавляет информацию о времени доставки и способе употребления пищи.
+      operationId: orderUpdate
       parameters:
         - $ref: '#/components/parameters/orderId'
         - $ref: '#/components/parameters/typeOfDeliveryId'
@@ -278,13 +307,14 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'  
+  
   /orders/payment:
     post:
       tags: 
         - Работа с заказом и корзиной
       security:
         - bearerAuth: []
-      summary: Инициация оплаты заказа
+      summary: Инициировать оплату заказа
       description: Инициирует процесс оплаты для указанного заказа и возвращает ссылку для перенаправления на платежный шлюз.
       operationId: initiatePayment
       requestBody:
@@ -313,6 +343,7 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500' 
+
   /payment-status:
     post:
       tags:
@@ -337,7 +368,7 @@ paths:
         - Управление заказами
       security:
         - bearerAuth: []
-      summary: Просмотр статуса заказа на информационном табло
+      summary: Просмотреть статуса заказа на информационном табло
       description: Возвращает текущий статус указанного заказа
       operationId: userOrderStatus
       parameters:
@@ -353,16 +384,14 @@ paths:
                   orderStatus:
                     type: string
                     enum:
-                      - Временный
-                      - Новый
-                      - в производстве
-                      - Приготовлен
-                      - На выдаче
-                      - Утилизирован
-                      - Завершен
-                      - Отменен
-                      - Ошибка
+                      - Готовится
+                      - Готово
                     description: Статус заказа
+                  orderId:
+                    type: string
+                    maxLength: 19
+                    example: OD00001       
+                    description: Уникальный идентификатор заказа
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -513,27 +542,63 @@ components:
           type: number
           format: float
           description: Количество протеинов
-          example: 120
+          example: 120.1
         fats:
           type: number
           format: float
           description: Количество жиров
-          example: 23
+          example: 23.7
         carbohydrates:
           type: number
           format: float
           description: Количество углеводов
-          example: 22
+          example: 22.3
         calorie:
           type: number
           format: float
           description: Количество каллорий
-          example: 220
+          example: 220.8
         price:
           type: number
           format: float
           description: Цена блюда
           example: 485.23
+    Order:
+      description: Информация о заказе получаемая клиентом в приложении
+      properties:
+        orderId:
+          type: string
+          maxLength: 19
+          example: OD00001       
+          description: Уникальный идентификатор заказа
+        typeOfDelivery:
+          type: string
+          maxLength: 50
+          example: "в ресторане"
+          description: Способ употребления пищи
+        timeOfDelivery:
+          type: string
+          format: date-time
+          example: "2024-10-15T10:00:00Z"
+        OrderDateTime:
+          type: string
+          format: date-time
+          example: "2024-10-15T10:00:00Z"
+        ammount:
+          type: number
+          description: Стоимость
+          format: float
+          example: 50.4
+        discount:
+          type: number
+          description: Скидка
+          format: float
+          example: 5.3
+        total:
+          type: number
+          description: Итоговая стоимость
+          format: float
+          example: 45.1
     Menu:
       description: Виды меню и категории блюд
       required:
@@ -646,7 +711,7 @@ components:
           type: integer
           maximum: 29
           description: Количество добавляемых блюд
-          example: 
+          example: 5
     PaymentRequest:
       type: object
       required:

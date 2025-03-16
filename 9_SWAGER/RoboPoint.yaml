@@ -595,7 +595,7 @@ components:
           maxLength: 50
           minLength: 2
           example: "КокаКолла"
-        dishes:
+        replacementDishes:
           type: array
           items:
             $ref: '#/components/schemas/Dishes'
@@ -621,7 +621,12 @@ components:
         quantity:
           type: integer
           description: Количество блюд доступных для заказа
-          example: 3    
+          example: 3  
+        replacementDishes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Dishes'
+          description: Блюда не замену        
         message:
             type: string
             maxLength: 250

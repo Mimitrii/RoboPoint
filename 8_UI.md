@@ -30,7 +30,7 @@
 
 ![alt text](<images/8_UI/Android Medium - 6.png>)
 
-### WF 8 Страница выбора категорий блюд и самих блюд
+### WF8 Страница выбора категорий блюд и самих блюд
 
 ![alt text](<images/8_UI/Android Medium - 7.png>)
 

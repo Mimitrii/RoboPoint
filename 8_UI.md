@@ -49,10 +49,11 @@
 ### WF12 Страница выбора способа употребления пищи
 
 ![alt text](<images/8_UI/Android Medium - 11.png>)
-![alt text](<images/8_UI/Android Medium - 20.png>)
+
 ### WF13 Страница времени приготовления блюд
 
 ![alt text](<images/8_UI/Android Medium - 12.png>)
+![alt text](<images/8_UI/Android Medium - 20.png>)
 
 ### WF14 Страница оплаты заказа
 

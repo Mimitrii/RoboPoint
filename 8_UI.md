@@ -71,7 +71,8 @@
 
 ![alt text](<images/8_UI/Android Medium - 16.png>)
 
-### WF18 Информационное табло
+### WF18 
+Информационное табло
 
 ![alt text](<images/8_UI/Frame 20.png>)
 

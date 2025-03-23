@@ -50,14 +50,12 @@ Table  Recipe {
   recipeId varchar [primary key]
   name varchar2
   ingredientId varchar2
-  qty decimal
+  defaultQty integer
   maxQty integer
   minQty integer
   required boolean
-  proteins decimal
-  fats decimal
-  carbohydrates decimal
-  calorie decimal
+  recipeType varchar2
+  qty integer
 }
 
 Table  Ingredient {
@@ -193,3 +191,6 @@ REf: TypeofPayment.paymentId> Payment.paymentId
 Ref: TypeofMenu.menuId> Menu.menuId
 Ref: UserStatus.userId> User.userId
 
+
+
+Ref: "Discount"."endDateTime" < "Discount"."startDateTime"

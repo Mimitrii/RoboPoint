@@ -75,6 +75,11 @@
 
 ![alt text](<images/8_UI/Frame 20.png>)
 
+### WF19 Страница формирования КомбоБургера
+
+![alt text](<images/8_UI/Android Medium - 21.png>)
+![alt text](<images/8_UI/Android Medium - 22.png>)
+
 ## 8.2 Прототип приложения
 
 [PrototypeFigma](https://www.figma.com/proto/lOVrO6VRC6CVtk29TCGyeL/Application-Project?node-id=0-1&p=f&t=FCjXm22IvFeecmqv-0&scaling=scale-down&content-scaling=fixed&starting-point-node-id=34%3A2392)

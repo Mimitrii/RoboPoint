@@ -220,6 +220,39 @@ paths:
             $ref: '#/components/responses/404'
           '500':
             $ref: '#/components/responses/500' 
+  /recipe:
+      get:
+        tags: 
+          - Блюдо
+        security:
+          - bearerAuth: []
+        summary: Ознакомится c меню
+        description: Получить состав КомбоБургера
+        parameters:
+          - in: query
+            name: dishId
+            schema:
+              type: string
+              description: Уникальный идентификатор блюда
+              maxLength: 19
+              example: DI00001
+        responses:
+          '200':
+            description: Cписок ингредиентов входящих в КомбоБургер
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Recipe'
+          '400':
+            $ref: '#/components/responses/400'
+          '401':
+            $ref: '#/components/responses/401'
+          '404':
+            $ref: '#/components/responses/404'
+          '500':
+            $ref: '#/components/responses/500' 
 
 
   /cart/checkout:
@@ -509,7 +542,10 @@ components:
       - dishId
       - name
       - description
-      - menuId
+      - photo
+      - combo
+      - price
+      - recipeId
       type: object
       properties:
         dishId:
@@ -562,6 +598,148 @@ components:
           format: float
           description: Цена блюда
           example: 485.23
+        recipeId:
+          type: string
+          description: Уникальный идентификатор рецепта
+          maxLength: 19
+          example: RI00001        
+    Recipe:
+      description: Рецепт для приготовления блюда
+      required:
+      - recipeId
+      - name
+      - description
+      - Ingredients
+      type: object
+      properties:
+          recipeId:
+            type: string
+            description: Уникальный идентификатор рецепта
+            maxLength: 19
+            example: RI00001
+          name:
+            type: string
+            description: Наименование рецепта
+            maxLength: 50
+            minLength: 2
+            example: "Рецепт КомбоБургера"
+          description:
+            type: string
+            description: Описание рецепта
+            maxLength: 250
+            minLength: 2
+            example: "Рецепт КомбоБургера состоит  из следующих ингредиентов" 
+          Ingredients:
+            type: array
+            items:
+              type: object
+              properties:
+                IngredientId:
+                  type: string
+                  description: Уникальный идентификатор ингредиента
+                  maxLength: 19
+                  example: II00001
+                name:
+                  type: string
+                  description: Наименование ингредиента
+                  maxLength: 50
+                  minLength: 2
+                  example: "Сыр"
+                description:
+                  type: string
+                  description: Описание ингредиента
+                  maxLength: 250
+                  minLength: 2
+                  example: "Мягкий сливочный сыр"
+                photo:
+                  type: string
+                  format: url
+                  example: https://static.wikia.nocookie.net/harrypotter/images/c/c5/Pumpkin_Juice_WWHP.jpg/revision/latest/scale-to-width-down/1000?cb=20110529053444
+                price:
+                  type: number
+                  format: float
+                  description: Цена ингредиента
+                  example: 485.23
+                required:
+                  type: boolean
+                  description: Обязательный ингредиент в составе КомбоБургера без которого не возможно приготовление
+                  example: 'Y'
+                maxQty:
+                  type: integer
+                  description: Максимальное количество ингредиентов доступных для добавления в рецепт
+                  example: 4  
+                minQty:
+                  type: integer
+                  description: Минимальное количество ингредиентов доступных для добавления в рецепт
+                  example: 1  
+                defaultQty:
+                  type: integer
+                  description: Дефолтное количество ингредиентов для блюда
+                  example: 2  
+    Ingredient:
+      description: Ингредиенты
+      required:
+      - IngredientId
+      - name
+      - description
+      - photo
+      - proteins
+      - fats
+      - carbohydrates
+      - calorie
+      - price
+      type: object
+      properties:
+          IngredientId:
+            type: string
+            description: Уникальный идентификатор ингредиента
+            maxLength: 19
+            example: II00001
+          name:
+            type: string
+            description: Наименование ингредиента
+            maxLength: 50
+            minLength: 2
+            example: "Сыр"
+          description:
+            type: string
+            description: Описание ингредиента
+            maxLength: 250
+            minLength: 2
+            example: "Мягкий сливочный сыр"
+          photo:
+            type: string
+            format: url
+            example: https://static.wikia.nocookie.net/harrypotter/images/c/c5/Pumpkin_Juice_WWHP.jpg/revision/latest/scale-to-width-down/1000?cb=20110529053444
+          proteins:
+            type: number
+            format: float
+            description: Количество протеинов
+            example: 120.1
+          fats:
+            type: number
+            format: float
+            description: Количество жиров
+            example: 23.7
+          carbohydrates:
+            type: number
+            format: float
+            description: Количество углеводов
+            example: 22.3
+          calorie:
+            type: number
+            format: float
+            description: Количество каллорий
+            example: 220.8
+          price:
+            type: number
+            format: float
+            description: Цена ингредиента
+            example: 485.23
+          qty:
+            type: integer
+            description: Количество доступных ингредиентов 
+            example: 3  
     Order:
       description: Информация о заказе получаемая клиентом в приложении
       properties:

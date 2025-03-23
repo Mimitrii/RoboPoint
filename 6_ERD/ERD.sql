@@ -50,14 +50,12 @@ CREATE TABLE "Recipe" (
   "recipeId" varchar PRIMARY KEY,
   "name" varchar2,
   "ingredientId" varchar2,
-  "qty" decimal,
+  "defaultQty" integer,
   "maxQty" integer,
   "minQty" integer,
   "required" boolean,
-  "proteins" decimal,
-  "fats" decimal,
-  "carbohydrates" decimal,
-  "calorie" decimal
+  "recipeType" varchar2,
+  "qty" integer
 );
 
 CREATE TABLE "Ingredient" (
@@ -208,3 +206,5 @@ ALTER TABLE "TypeofPayment" ADD FOREIGN KEY ("paymentId") REFERENCES "Payment" (
 ALTER TABLE "TypeofMenu" ADD FOREIGN KEY ("menuId") REFERENCES "Menu" ("menuId");
 
 ALTER TABLE "UserStatus" ADD FOREIGN KEY ("userId") REFERENCES "User" ("userId");
+
+ALTER TABLE "Discount" ADD FOREIGN KEY ("startDateTime") REFERENCES "Discount" ("endDateTime");

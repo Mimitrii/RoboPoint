@@ -138,9 +138,9 @@ paths:
           name: TypeofMenu
           schema:
             type: string
-            maxLength: 150
-            minLength: 2
+            enum: [Мексиканская, Итальянская, Американская]
           description: Фильтр по кухням и видам меню
+          example: Мексиканская
       responses:
         '200':
           description: Cписок категорий блюд
@@ -149,7 +149,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Menu'
+                  $ref: '#/components/schemas/Category'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -242,8 +242,6 @@ paths:
             content:
               application/json:
                 schema:
-                  type: array
-                  items:
                     $ref: '#/components/schemas/Recipe'
           '400':
             $ref: '#/components/responses/400'
@@ -269,10 +267,22 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CheckoutRequest'
+              type: array
+              items:
+                $ref: '#/components/schemas/CheckoutRequest'
+              example:
+                - dishId: "DI00001"
+                  quantity: 1
+                  comboIngredients:
+                    - IngredientId: "II00001"
+                      qty: 3
+                    - IngredientId: "II00002"
+                      qty: 2
+                - dishId: "DI00002"
+                  quantity: 3  
       responses:
         '200':
-          description: Заказ успешно оформлен
+          description: Временный заказ успешно оформлен
           content:
             application/json:
               schema:
@@ -572,7 +582,7 @@ components:
         combo:
           type: boolean
           description: Сборное блюдо 
-          example: 'Y'
+          example: true
         proteins:
           type: number
           format: float
@@ -628,7 +638,7 @@ components:
             description: Описание рецепта
             maxLength: 250
             minLength: 2
-            example: "Рецепт КомбоБургера состоит  из следующих ингредиентов" 
+            example: "Рецепт КомбоБургера состоит из следующих ингредиентов" 
           Ingredients:
             type: array
             items:
@@ -672,22 +682,15 @@ components:
                   type: integer
                   description: Минимальное количество ингредиентов доступных для добавления в рецепт
                   example: 1  
-                defaultQty:
+                qty:
                   type: integer
-                  description: Дефолтное количество ингредиентов для блюда
+                  description: Дефолтное количество ингредиентов для добавления в рецепт
                   example: 2  
-    Ingredient:
+    Ingredients:
       description: Ингредиенты
       required:
       - IngredientId
-      - name
-      - description
-      - photo
-      - proteins
-      - fats
-      - carbohydrates
-      - calorie
-      - price
+      - qty
       type: object
       properties:
           IngredientId:
@@ -695,50 +698,9 @@ components:
             description: Уникальный идентификатор ингредиента
             maxLength: 19
             example: II00001
-          name:
-            type: string
-            description: Наименование ингредиента
-            maxLength: 50
-            minLength: 2
-            example: "Сыр"
-          description:
-            type: string
-            description: Описание ингредиента
-            maxLength: 250
-            minLength: 2
-            example: "Мягкий сливочный сыр"
-          photo:
-            type: string
-            format: url
-            example: https://static.wikia.nocookie.net/harrypotter/images/c/c5/Pumpkin_Juice_WWHP.jpg/revision/latest/scale-to-width-down/1000?cb=20110529053444
-          proteins:
-            type: number
-            format: float
-            description: Количество протеинов
-            example: 120.1
-          fats:
-            type: number
-            format: float
-            description: Количество жиров
-            example: 23.7
-          carbohydrates:
-            type: number
-            format: float
-            description: Количество углеводов
-            example: 22.3
-          calorie:
-            type: number
-            format: float
-            description: Количество каллорий
-            example: 220.8
-          price:
-            type: number
-            format: float
-            description: Цена ингредиента
-            example: 485.23
           qty:
             type: integer
-            description: Количество доступных ингредиентов 
+            description: Количество ингредиентов для приготовления блюда
             example: 3  
     Order:
       description: Информация о заказе получаемая клиентом в приложении
@@ -776,19 +738,6 @@ components:
           description: Итоговая стоимость
           format: float
           example: 45.1
-    Menu:
-      description: Виды меню и категории блюд
-      required:
-      - TypeofMenuName
-      type: object
-      properties:
-        TypeofMenuName: 
-          type: string
-          maxLength: 50
-          minLength: 2
-          description: Виды и кухни меню
-        categoryName:
-          $ref: '#/components/schemas/Category'
     Category:
       description: категории блюд
       required:
@@ -822,7 +771,8 @@ components:
         message:
           type: string
           maxLength: 250
-          description: Сообщение о статусе заказа
+          description: Сообщение о статусе
+          example: OK   
     CheckoutBadResponse:
       type: object
       properties:
@@ -841,7 +791,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Dishes'
-          description: Блюда не замену      
+          description: Блюда на замену      
         message:
             type: string
             maxLength: 250
@@ -868,7 +818,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Dishes'
-          description: Блюда не замену        
+          description: Блюда на замену        
         message:
             type: string
             maxLength: 250
@@ -888,7 +838,12 @@ components:
           type: integer
           maximum: 29
           description: Количество добавляемых блюд
-          example: 5
+          example: 1
+        comboIngredients:
+          type: array
+          description: Ингредиенты для комбо-блюда
+          items:
+            $ref: '#/components/schemas/Ingredients'
     PaymentRequest:
       type: object
       required:
@@ -1039,3 +994,7 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/DEMENTRIY/RoboPoint/1.0.0
